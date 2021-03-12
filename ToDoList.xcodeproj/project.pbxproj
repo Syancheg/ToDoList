@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A122464525FAA1810086CE3A /* TaskRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A122464425FAA1810086CE3A /* TaskRepository.swift */; };
 		A1CF436425F6A10E009690BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF436325F6A10E009690BC /* AppDelegate.swift */; };
 		A1CF436625F6A10E009690BC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF436525F6A10E009690BC /* SceneDelegate.swift */; };
 		A1CF436825F6A10E009690BC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CF436725F6A10E009690BC /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A122464425FAA1810086CE3A /* TaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRepository.swift; sourceTree = "<group>"; };
 		A1CF436025F6A10E009690BC /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1CF436325F6A10E009690BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1CF436525F6A10E009690BC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				A1CF437A25F6A6B0009690BC /* Task.swift */,
+				A122464425FAA1810086CE3A /* TaskRepository.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 			files = (
 				A1CF437B25F6A6B0009690BC /* Task.swift in Sources */,
 				A1CF438525F6AA50009690BC /* MainView.swift in Sources */,
+				A122464525FAA1810086CE3A /* TaskRepository.swift in Sources */,
 				A1CF436825F6A10E009690BC /* ViewController.swift in Sources */,
 				A1CF436425F6A10E009690BC /* AppDelegate.swift in Sources */,
 				A1CF436625F6A10E009690BC /* SceneDelegate.swift in Sources */,
