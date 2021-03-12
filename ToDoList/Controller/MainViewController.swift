@@ -10,12 +10,7 @@ import UIKit
 class MainViewController: UIViewController, MainViewDelegate {
 
     lazy var contentView = self.view as! MainView
-    private var mainCompositeTasks: Task = CompositeTask(name: "Главная")
-    private var viewController: MainViewController {
-        let storybord = UIStoryboard(name: "Main", bundle: nil)
-        let viewController = storybord.instantiateViewController(identifier: "MainViewController") as! MainViewController
-        return  viewController
-    }
+    var mainTask: Task?
 
     @IBAction func addTask(_ sender: UIBarButtonItem) {
         showTaskAlert()
@@ -23,6 +18,22 @@ class MainViewController: UIViewController, MainViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.delegate = self
+        loadTasks()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        contentView.tableView.reloadData()
+    }
+    
+    private func loadTasks(){
+        if mainTask == nil {
+            mainTask = TaskRepository.shared.getMainTask()
+        }
+
+        if let task = mainTask {
+            contentView.tasks = task.getSubtasks()
+        }
     }
     
     private func showTaskAlert(){
@@ -44,13 +55,17 @@ class MainViewController: UIViewController, MainViewDelegate {
     
     private func appendTask(taskName: String){
         let task = CompositeTask(name: taskName)
-        mainCompositeTasks.addSubtasks(task: task)
-        contentView.tasks = mainCompositeTasks.getTasks()
-        contentView.tableView.reloadData()
+        if let mainTask = self.mainTask {
+            TaskRepository.shared.addTask(newTask: task, mainTask: mainTask)
+            contentView.tasks.append(task)
+        }
     }
     
-    func changeTask(index: Int) {
-        viewController.mainCompositeTasks = mainCompositeTasks.getTask(index: index)
+    func changeTask(task: Task) {
+        let storybord = UIStoryboard(name: "Main", bundle: nil)
+        let viewController = storybord.instantiateViewController(identifier: "MainViewController") as! MainViewController
+        viewController.mainTask = task
+        viewController.title = task.name
         navigationController?.pushViewController(viewController, animated: true)
     }
     

@@ -8,88 +8,82 @@
 import UIKit
 
 protocol Task {
+    var id: Int { get set }
     var name: String { get set }
-    func description() -> String
-    func getTasks() -> [Task]
-    func getTask(index: Int) -> Task
     func addSubtasks(task: Task)
-    func contentCount() -> Int
-    func convertTask(task: Task)
+    func removeSubtask(id: Int) -> Bool
+    func getSubtasks() -> [Task]
+    func getAllSubtasks() -> [Task]
 }
 
 class ConcreteTask: Task {
-
-    var name: String
+    var name: String = ""
     
-    init(name: String) {
-        self.name = name
+    func getAllSubtasks() -> [Task] {
+        return [self]
     }
     
+    var id: Int = 0
+
     func addSubtasks(task: Task) {
         
     }
     
-    func convertTask(task: Task) {
-        
+    func removeSubtask(id: Int) -> Bool {
+        return false
     }
     
-    func getTask(index: Int) -> Task {
-        return self
-    }
-    
-    func getTasks() -> [Task] {
-        return []
-    }
-    
-    func contentCount() -> Int {
-        return 0
-    }
-    
-    func description() -> String {
-        return "\(name) — 0 подзадач"
+    func getSubtasks() -> [Task] {
+        return [self]
     }
     
 }
 
-class CompositeTask: Task {
+final class CompositeTask: Task {
     
     var name: String
-    private var subtasks = [Task]()
+    var id: Int
     
     init(name: String) {
         self.name = name
+        self.id = TaskRepository.shared.getLastId()
     }
     
-    func addSubtasks(task: Task){
-        subtasks.append(task)
+    init() {
+        self.name = "Main"
+        self.id = 0
     }
     
-    func getTasks() -> [Task] {
-        return subtasks
+    private var subTasks: [Task] = []
+    
+    func addSubtasks(task: Task) {
+        self.subTasks.append(task)
     }
     
-    func contentCount() -> Int {
-        return subtasks.count
-    }
-    
-    func getTask(index: Int) -> Task {
-        let task = index < subtasks.count ? subtasks[index] : subtasks[subtasks.count - 1]
-        return task
-    }
-    
-    func convertTask(task: Task) {
-        if task is CompositeTask {
-            for i in 0..<subtasks.count {
-                if subtasks[i].name == task.name,
-                   subtasks[i] is ConcreteTask {
-                    subtasks[i] = task
-                }
+    func removeSubtask(id: Int) -> Bool {
+        var isDeleted = false
+        for (index, subTask) in subTasks.enumerated() {
+            if subTask.id == id {
+                subTasks.remove(at: index)
+                isDeleted = true
+            } else {
+                isDeleted = false
             }
         }
+        return isDeleted
     }
     
-    func description() -> String {
-        return "\(name) — \(subtasks.count) подзадач"
+    func getAllSubtasks() -> [Task] {
+        var tasks: [Task] = []
+        for subTask in subTasks {
+            tasks.append(subTask)
+            tasks.append(contentsOf: subTask.getSubtasks())
+        }
+        return tasks
     }
- 
+    
+    func getSubtasks() -> [Task] {
+        return subTasks
+    }
+
 }

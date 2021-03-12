@@ -8,12 +8,16 @@
 import UIKit
 
 protocol MainViewDelegate {
-    func changeTask(index: Int)
+    func changeTask(task: Task)
 }
 
 class MainView: UIView, UITableViewDelegate, UITableViewDataSource {
     
-    var tasks: [Task] = []
+    var tasks: [Task] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     var delegate: MainViewDelegate?
     
     @IBOutlet weak var tableView: UITableView!
@@ -24,12 +28,13 @@ class MainView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as! MainViewCell
-        cell.taskNameLabel.text = tasks[indexPath.row].description()
+        cell.taskNameLabel.text = tasks[indexPath.row].name + " — \(tasks[indexPath.row].getSubtasks().count) подзадач"
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.changeTask(index: indexPath.row)
+        let task = tasks[indexPath.row]
+        delegate?.changeTask(task: task)
     }
 
 }
